@@ -1,5 +1,6 @@
 var grunt = require('grunt');
 var uncss = require('uncss');
+var critical = require('critical');
 
 module.exports = function(grunt) {
 	grunt.initConfig({
@@ -98,15 +99,32 @@ module.exports = function(grunt) {
 					'.close',
 					'.alert-dismissible',
 					'.page.calendar .events .panel:hover .fa-angle-down.open',
-					'.fa-angle-down.open']
+					'.fa-angle-down.open'
+				]
 			},
 			files: {
-			  'public/css/tidy.css': ['public/index.html']
+			  'css/tidy.css': ['index.html']
 			}
 		  }
+		},
+		critical: {
+			test: {
+					options: {
+							inline: 'true',
+							base: './',
+							css: 'css/tidy.min.css',
+							width: 1054,
+							height: 1054,
+							ignore: '@font-face'
+					},
+					src: 'index.html',
+					dest: 'index-critical.html'
+			}
 		}
-	})
+	});
 }
 
 
 grunt.loadNpmTasks('grunt-uncss');
+grunt.loadNpmTasks('grunt-critical');
+grunt.registerTask('default', ['uncss', 'critical']);
